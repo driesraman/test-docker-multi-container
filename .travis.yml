@@ -1,0 +1,32 @@
+# Indicate to Travis CI that we need root permissions
+sudo: required
+
+# Tell Travis which services we need
+services:
+  - docker
+
+# Steps to launch before running the tests
+before_install:
+  - docker build - driesraman/test-docker-multi-container -f ./client/Dockerfile.dev ./client
+
+# Commands needed to run the testsuite
+script:
+  - docker run driesraman/test-docker-multi-container npm test -- --coverage
+
+# Steps to take when all entries in the "scripts" section succeed
+# (We will build the different docker images and push them to docker hub)
+after_success:
+  # Build images
+  - docker build -t driesraman/test-1-docker-multi-container-client ./client
+  - docker build -t driesraman/test-1-docker-multi-container-nginx ./nginx
+  - docker build -t driesraman/test-1-docker-multi-container-server ./server
+  - docker build -t driesraman/test-1-docker-multi-container-worker ./worker
+  # Log in to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to doker hub
+  - docker push driesraman/test-1-docker-multi-container-client
+  - docker push driesraman/test-1-docker-multi-container-nginx
+  - docker push driesraman/test-1-docker-multi-container-server
+  - docker push driesraman/test-1-docker-multi-container-worker
+
+
