@@ -7,7 +7,7 @@ services:
 
 # Steps to launch before running the tests
 before_install:
-  - docker build - driesraman/test-docker-multi-container -f ./client/Dockerfile.dev ./client
+  - docker build -t driesraman/test-docker-multi-container -f ./client/Dockerfile.dev ./client
 
 # Commands needed to run the testsuite
 script:
@@ -28,4 +28,3 @@ after_success:
   - docker push driesraman/test-1-docker-multi-container-nginx
   - docker push driesraman/test-1-docker-multi-container-server
   - docker push driesraman/test-1-docker-multi-container-worker
-  
