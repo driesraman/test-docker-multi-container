@@ -1,6 +1,6 @@
 {
     "AWSEBDockerrunVersion": 2,
-    "ContainerDefinitions": [
+    "containerDefinitions": [
         {
             "name": "client",
             "image": "driesraman/test-1-docker-multi-container-client",
