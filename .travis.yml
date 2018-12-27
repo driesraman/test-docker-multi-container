@@ -28,3 +28,17 @@ after_success:
   - docker push driesraman/test-1-docker-multi-container-nginx
   - docker push driesraman/test-1-docker-multi-container-server
   - docker push driesraman/test-1-docker-multi-container-worker
+
+# indicate what to do once the "script" section passes all steps (= tests in our case)
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-west-1"
+  app: "test-multi-docker"
+  env: "TestMultiDocker-env"
+  bucket_name: "elasticbeanstalk-eu-west-1-692078057127"
+  bucket_path: "test-multi-docker"
+  on:
+      branch: master
+  access_key_id: "$AWS_ACCESS_KEY" # Configured in the Travis CI project configuration
+  secret_access_key: 
+    secure: "$AWS_SECRET_KEY" # Configured in the Travis CI project configuration
